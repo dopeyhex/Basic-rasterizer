@@ -108,6 +108,17 @@ vector4Float Shader::vertexCoord(size_t vertex, vector4Float coordsWorld, vector
     return coordsScreen;
 }
 
+//whoa, thx internet, very cool!
+float fastPow(float a, float b) {
+    union {
+        float d;
+        int x[2];
+    } u = {a};
+    u.x[1] = (int)(b * (u.x[1] - 1064866805) + 1064866805);
+    u.x[0] = 0;
+    return u.d;
+}
+
 bool Shader::isShaderPart(vector3Float barScreen, vector3Float& color, int samples) {
     float w = (coordsScreenMatrix * barScreen).w;
     if (fabs(w) < 1e-5) {
@@ -129,7 +140,7 @@ bool Shader::isShaderPart(vector3Float barScreen, vector3Float& color, int sampl
         vector3Float midDir = (lightDir + povDir) / 2.0f;
 
         vector3Float diffuse = shadeParams.diffuse * ((modelShading.diffuse(uv).rgb()) * std::max(0.0f, dot(normal, lightDir)));
-        vector3Float specular = shadeParams.specular * ((modelShading.specular(uv)) * powf(std::max(0.0f, dot(normal, midDir)), 20.0f));
+        vector3Float specular = shadeParams.specular * ((modelShading.specular(uv)) * fastPow(std::max(0.0f, dot(normal, midDir)), 20.0f));
 
         float darkness = 0.0f;
         vector3Float lightPos = lightPositionMatrix * barScreen * w;
