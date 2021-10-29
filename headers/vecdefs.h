@@ -5,6 +5,18 @@
 #include <vector>
 //definitions of vectors
 
+template <typename T>
+T fastInvSqrt(T x) {
+    //Thank you, ID Software and IEEE754
+    T y = x;
+    int i = *(int *) &y;
+    i = 0x5f3759df - (i >> 1);
+    y = *(T *) &i;
+    y = y * (1.5f - (x * 0.5f * y * y));
+
+    return y;
+}
+
 template <size_t SIZE, typename T>
 class vector {
 private:
@@ -28,7 +40,7 @@ public:
 };
 
 template <typename T>
-class vector<2, T> {
+class vector<2, T>{
 public:
     T x, y;
 
@@ -66,11 +78,9 @@ public:
                 break;
         }
     }
-
-    float norm() {
-        return std::sqrt(x * x + y * y);
-    }
 };
+
+
 
 template <typename T>
 class vector<3, T> {
@@ -120,18 +130,14 @@ public:
         }
     }
 
-    float norm() {
-        return std::sqrt(x * x + y * y + z * z);
-    }
-
     vector<3, T>& normalize() {
-        *this = (*this) * (1 / norm());
+        *this = (*this) * (fastInvSqrt(x * x + y * y + z * z));
         return *this;
     }
 };
 
 template <typename T>
-class vector<4, T> {
+class vector<4, T>{
 public:
     T x, y, z, w;
 
@@ -192,12 +198,8 @@ public:
         }
     }
 
-    float norm() {
-        return std::sqrt(x * x + y * y + z * z + w * w);
-    }
-
     vector<4, T>& normalize() {
-        *this = (*this) * (1 / norm());
+        *this = (*this) * (fastInvSqrt(x * x + y * y + z * z + w * w));
         return *this;
     }
 };
