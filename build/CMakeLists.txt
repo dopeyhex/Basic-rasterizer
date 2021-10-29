@@ -9,6 +9,8 @@ if (APPLE)
     set (DCMAKE_CXX_COMPILER "g++-11")
     set(OPENMP_LIBRARIES "/usr/local/Cellar/llvm/13.0.0_1/lib")
     set(OPENMP_INCLUDES "/usr/local/Cellar/llvm/13.0.0_1/include")
+    include_directories("${OPENMP_INCLUDES}")
+    link_directories("${OPENMP_LIBRARIES}")
 endif()
 
 OPTION (USE_OpenMP "Use OpenMP to enamble <omp.h>" ON)
@@ -38,8 +40,6 @@ endif(USE_OpenMP)
 
 find_package(OpenMP)
 if (OPENMP_FOUND)
-    include_directories("${OPENMP_INCLUDES}")
-    link_directories("${OPENMP_LIBRARIES}")
     set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
 endif()
 
