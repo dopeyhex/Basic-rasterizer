@@ -12,4 +12,5 @@ Models and textures should be in the "obj" folder and match the specific naming:
 
 Example:
 
-<img src="https://github.com/dopeyhex/bruh/blob/master/out.png?raw=true" width="400" height="400" />
+
+<img src="https://github.com/dopeyhex/Basic-rasterizer/blob/main/out.png?raw=true" width="400" height="400" />
